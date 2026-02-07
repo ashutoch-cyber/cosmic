@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Watch | Near-Earth Asteroid Monitoring</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Video -->
+<video id="bg-video" autoplay muted loop playsinline>
+    <source src="starry.webm" type="video/webm">
+</video>
+    
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i data-lucide="orbit" class="logo-icon"></i>
+                <span class="logo-text">RBIT<span class="logo-accent"></span></span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#dashboard" class="nav-link" data-section="dashboard">Dashboard</a>
+                <a href="#watchlist" class="nav-link" data-section="watchlist">Watchlist</a>
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <div class="user-avatar">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <span class="user-name" id="userName">Astronaut</span>
+                    <button class="logout-btn" id="logoutBtn">
+                        <i data-lucide="log-out"></i>
+                    </button>
+                </div>
+                <button class="auth-btn" id="authBtn">Login</button>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#dashboard" class="mobile-link" data-section="dashboard">Dashboard</a>
+        <a href="#watchlist" class="mobile-link" data-section="watchlist">Watchlist</a>
+        <button class="mobile-auth-btn" id="mobileAuthBtn">Login</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="pulse-dot"></span>
+                    <span>Live NASA Data Feed</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line accent">Tracking Space Protecting Earth</span>
+                </h1>
+                 
+                <div class="hero-cta">
+                    <button class="cta-btn primary" id="exploreBtn">
+                        <i data-lucide="telescope"></i>
+                        Explore Asteroids
+                    </button>
+                    <button class="cta-btn secondary" id="heroAuthBtn">
+                        <i data-lucide="shield"></i>
+                        Login / Register
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="asteroidCount">0</span>
+                        <span class="stat-label">Asteroids Tracked</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="hazardCount">0</span>
+                        <span class="stat-label">Potentially Hazardous</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="approachCount">0</span>
+                        <span class="stat-label">Close Approaches Today</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Earth & Orbit Animation -->
+            <div class="hero-visual">
+                <div class="orbit-container">
+                    <div class="earth real-earth">
+                        <img src="3d-rendering-planet-earth.png" alt="Earth">
+                    </div>
+                    <div class="orbit-ring orbit-2">
+                        <div class="asteroid-dot"></div>
+                    </div>
+                    <div class="orbit-ring orbit-3">
+                        <div class="asteroid-dot warning"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section class="dashboard" id="dashboard" style="display: none;">
+            <div class="section-header">
+                <div class="header-content">
+                    <h2 class="section-title">
+                        <i data-lucide="radar"></i>
+                        Live Asteroid Feed
+                    </h2>
+                    <p class="section-subtitle">Real-time near-Earth object tracking</p>
+                </div>
+                 <!-- === SEARCH BAR START === -->
+
+                <div class="filter-tabs">
+                 <div class="search-container">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search asteroid name...">
+                    <button class="search-btn" id="searchBtn">
+                     <i data-lucide="search"></i>
+                  </button>
+                </div>
+                </div>
+                <div class="header-actions">
+
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All</button>
+                        <button class="filter-tab" data-filter="low">Low Risk</button>
+                        <button class="filter-tab" data-filter="medium">Medium</button>
+                        <button class="filter-tab" data-filter="high">High Risk</button>
+                    </div>
+                    <button class="refresh-btn" id="refreshBtn">
+                        <i data-lucide="refresh-cw"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Loading Skeleton -->
+            <div class="skeleton-grid" id="skeletonGrid">
+                <div class="skeleton-card">
+                    <div class="skeleton-header"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-stats"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-header"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-stats"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-header"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-stats"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-header"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-stats"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-header"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-stats"></div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-header"></div>
+                    <div class="skeleton-line"></div>
+                    <div class="skeleton-line short"></div>
+                    <div class="skeleton-stats"></div>
+                </div>
+            </div>
+            
+            <!-- Asteroid Grid -->
+            <div class="asteroid-grid" id="asteroidGrid" style="display: none;"></div>
+            
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i data-lucide="search-x"></i>
+                <h3>No asteroids found</h3>
+                <p>Try adjusting your filters or refresh the feed.</p>
+            </div>
+        </section>
+
+        <!-- Asteroid Detail Modal -->
+        <div class="modal-overlay" id="detailModal">
+            <div class="modal-container detail-modal">
+                <button class="modal-close" id="closeDetailModal">
+                    <i data-lucide="x"></i>
+                </button>
+                <div class="modal-content" id="detailContent">
+                    <!-- Content injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Watchlist Section -->
+        <section class="watchlist" id="watchlist" style="display: none;">
+            <div class="section-header">
+                <div class="header-content">
+                    <h2 class="section-title">
+                        <i data-lucide="bookmark"></i>
+                        Your Watchlist
+                    </h2>
+                    <p class="section-subtitle">Tracked asteroids and close approach alerts</p>
+                </div>
+            </div>
+            
+            <div class="watchlist-grid" id="watchlistGrid">
+                <div class="empty-watchlist" id="emptyWatchlist">
+                    <div class="empty-icon">
+                        <i data-lucide="telescope"></i>
+                    </div>
+                    <h3>Your watchlist is empty</h3>
+                    <p>Add asteroids from the dashboard to track their approach.</p>
+                    <button class="cta-btn primary" id="browseAsteroidsBtn">
+                        <i data-lucide="search"></i>
+                        Browse Asteroids
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-container auth-modal">
+            <button class="modal-close" id="closeAuthModal">
+                <i data-lucide="x"></i>
+            </button>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="register">Register</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <input type="text" id="loginUsername" required placeholder=" ">
+                    <label for="loginUsername">Username</label>
+                    <i data-lucide="user" class="input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" required placeholder=" ">
+                    <label for="loginPassword">Password</label>
+                    <i data-lucide="lock" class="input-icon"></i>
+                    <button type="button" class="toggle-password" data-target="loginPassword">
+                        <i data-lucide="eye"></i>
+                    </button>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">Login</span>
+                    <span class="btn-loader" style="display: none;">
+                        <i data-lucide="loader-2" class="spin"></i>
+                    </span>
+                </button>
+                <p class="auth-error" id="loginError"></p>
+            </form>
+            
+            <!-- Register Form -->
+            <form class="auth-form" id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <input type="text" id="regUsername" required placeholder=" " minlength="3">
+                    <label for="regUsername">Username</label>
+                    <i data-lucide="user" class="input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="regEmail" required placeholder=" ">
+                    <label for="regEmail">Email</label>
+                    <i data-lucide="mail" class="input-icon"></i>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="regPassword" required placeholder=" " minlength="6">
+                    <label for="regPassword">Password</label>
+                    <i data-lucide="lock" class="input-icon"></i>
+                    <button type="button" class="toggle-password" data-target="regPassword">
+                        <i data-lucide="eye"></i>
+                    </button>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loader" style="display: none;">
+                        <i data-lucide="loader-2" class="spin"></i>
+                    </span>
+                </button>
+                <p class="auth-error" id="registerError"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
