@@ -43,7 +43,7 @@ SECRET_KEY = 'django-insecure-$bj!x0s3srd1-k_1j3j+j*cd-_$i)3=!)4&&3si%7atv+t)*6b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['Cosmic-Watch-Orbit.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['Cosmic-Watch-Orbit.onrender.com', 'localhost', '127.0.0.1','cosmic-cgy4.onrender.com']
 
 
 # Application definition
