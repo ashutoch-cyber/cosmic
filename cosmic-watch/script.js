@@ -8,7 +8,7 @@
 // ========================================
 
 const CONFIG = {
-    API_BASE_URL: 'http://127.0.0.1:8000/api',
+    API_BASE_URL: 'https://cosmic-cgy4.onrender.com/api',
     REFRESH_INTERVAL: 60000, // 1 minute
     ANIMATION_DURATION: 0.6,
     STARFIELDRATE: 0.5
