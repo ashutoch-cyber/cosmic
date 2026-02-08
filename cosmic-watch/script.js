@@ -472,6 +472,15 @@ const navigation = {
     },
     
     showSection(sectionName) {
+         if (!state.user && (sectionName === 'dashboard' || sectionName === 'watchlist')) {
+        auth.openModal();
+        ui.showToast(
+            'Login required',
+            'Please log in to access this section',
+            'warning'
+        );
+        return;
+    }
         // Hide all sections
         elements.hero.style.display = 'none';
         elements.dashboard.style.display = 'none';
@@ -536,6 +545,16 @@ const dashboard = {
         elements.refreshBtn.addEventListener('click', () => {
             this.loadAsteroids();
         });
+        // 🔍 SEARCH INPUT (live typing)
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        state.searchQuery = e.target.value.toLowerCase().trim();
+        this.render();
+    });
+
+    // 🔍 SEARCH BUTTON (click)
+    document.getElementById('searchBtn').addEventListener('click', () => {
+        this.render();
+    });
     },
     
     async loadAsteroids() {
@@ -632,11 +651,12 @@ const dashboard = {
             });
         }
         
-        if (filtered.length === 0) {
-            elements.asteroidGrid.style.display = 'none';
-            elements.emptyState.style.display = 'block';
-            return;
-        }
+        // 🔍 Search filter
+if (state.searchQuery) {
+    filtered = filtered.filter(asteroid =>
+        asteroid.name.toLowerCase().includes(state.searchQuery)
+    );
+}
         
         elements.emptyState.style.display = 'none';
         elements.asteroidGrid.style.display = 'grid';
